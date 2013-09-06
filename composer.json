@@ -1,0 +1,9 @@
+{
+	"name": "tiendanube/php-sdk",
+	"description": "A PHP SDK for the Tienda Nube/Nuvem Shop API.",
+	"require": {
+		"rmccue/requests": ">=1.0"
+	},
+	"version": "1.0.0"
+}
+
