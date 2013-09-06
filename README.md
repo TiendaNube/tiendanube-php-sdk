@@ -7,17 +7,24 @@ Installation
 ------------
 This SDK is mounted on top of [Requests for PHP](https://github.com/rmccue/Requests), so we recommend using [Composer](https://github.com/composer/composer).
 
-Simply add `tiendanube/php-sdk` requirement to composer.json:
+Simply add `tiendanube/php-sdk` requirement to composer.json. You will also need to set minimum-stability to dev.
 
 ```json
 {
     "require": {
         "tiendanube/php-sdk": "1.*"
-    }
+    },
+    "minimum-stability": "dev"
 }
 ```
 
-Then run `composer install` to complete the installation.
+Then run `composer install` or `composer update` to complete the installation.
+
+If you need an autoloader, you can use the one provided by Composer:
+
+```php
+require 'vendor/autoload.php';
+```
 
 
 Authenticating Your App
