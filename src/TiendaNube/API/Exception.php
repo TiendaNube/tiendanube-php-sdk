@@ -7,7 +7,7 @@ class Exception extends \Exception {
     public function __construct($response){
         $body = $response->body;
         if (isset($body->message)){
-            $message = $body->message;
+            $message = isset($body->description) ? $body->description : $body->message;
         } else {
             $message = '';
             foreach ((array) $body as $field => $errors){

@@ -1,13 +1,13 @@
 Tienda Nube/Nuvem Shop SDK for PHP
 ==================================
 
-This SDK provides a simplified access to the [Tienda Nube/Nuvem Shop API](https://github.com/TiendaNube/api-docs) 
+This SDK provides a simplified access to the [Tienda Nube/Nuvem Shop API](https://github.com/TiendaNube/api-docs).
 
 Installation
 ------------
-This SDK is mounted on top of [Requests for PHP](https://github.com/rmccue/Requests), so we recommend using [Composer](https://github.com/composer/composer).
+This SDK is mounted on top of [Requests for PHP](https://github.com/rmccue/Requests), so we recommend using [Composer](https://github.com/composer/composer) for installing.
 
-Simply add `tiendanube/php-sdk` requirement to composer.json. You will also need to set minimum-stability to dev.
+Simply add the `tiendanube/php-sdk` requirement to composer.json. You will also need to set minimum-stability to dev.
 
 ```json
 {
@@ -29,9 +29,9 @@ require 'vendor/autoload.php';
 
 Authenticating Your App
 -----------------------
-When the user installs your app, he will be taken to your specified Redirect URI with a parameter called `code` containing your authorization code.
+When a user installs your app, he will be taken to your specified Redirect URI with a parameter called `code` containing your temporary authorization code.
 
-With this code you can request a permanent access token 
+With this code you can request a permanent access token.
 
 ```php
 $code = $_GET['code'];
@@ -50,7 +50,9 @@ var_dump($store_info);
 //  'scope' => string 'read_products,read_orders,read_customers' (length=40)
 ```
 
-Keep in mind that future visits to your app will not go through the Redirect URI, so you should store the store id in a session. However, if you need to authenticate a user that has already installed your app (or invite them to install it), you can redirect them to login to the Tienda Nube/Nuvem Shop site.
+Keep in mind that future visits to your app will not go through the Redirect URI, so you should store the store id in a session.
+
+However, if you need to authenticate a user that has already installed your app (or invite them to install it), you can redirect them to login to the Tienda Nube/Nuvem Shop site.
 
 ```php
 $auth = new TiendaNube\Auth(CLIENT_ID, CLIENT_SECRET);
@@ -75,7 +77,7 @@ $response = $api->get("products");
 var_dump($response->body);
 ```
 
-You can access the headers of the response via `$response->body` as if it were an array:
+You can access the headers of the response via `$response->headers` as if it were an array:
 
 ```php
 var_dump(isset($response->headers['X-Total-Count']));
@@ -148,7 +150,7 @@ try{
     $api->get('products');
 } catch(Tiendanube\API\Exception $e){
     var_dump($e->getMessage());
-    //string 'Returned with status code 401: Unauthorized' (length=43)
+    //string 'Returned with status code 401: Invalid access token' (length=43)
     
     var_dump($e->response->body);
     //object(stdClass)[165]
