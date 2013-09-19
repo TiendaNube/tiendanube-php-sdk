@@ -12,7 +12,7 @@ Simply add the `tiendanube/php-sdk` requirement to composer.json. You will also 
 ```json
 {
     "require": {
-        "tiendanube/php-sdk": "1.*"
+        "tiendanube/php-sdk": "dev-master"
     },
     "minimum-stability": "dev"
 }
