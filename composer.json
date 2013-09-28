@@ -6,7 +6,6 @@
     },
     "autoload": {
         "psr-0": {"TiendaNube": "src/"}
-    },
-    "version": "1.0"
+    }
 }
 
