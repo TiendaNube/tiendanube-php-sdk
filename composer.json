@@ -1,6 +1,7 @@
 {
     "name": "tiendanube/php-sdk",
     "description": "A PHP SDK for the Tienda Nube/Nuvem Shop API.",
+    "license": "MIT",
     "require": {
         "rmccue/requests": ">=1.0"
     },
