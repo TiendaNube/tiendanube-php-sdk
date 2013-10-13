@@ -93,7 +93,9 @@ class API {
     
         $response = $this->requests->request($this->url . $path, $headers, $data, $method, $options);
         $response = new API\Response($this, $response);
-        if (!in_array($response->status_code, [200, 201])){
+        if ($response->status_code == 404){
+            throw new API\NotFoundException($response);
+        } elseif (!in_array($response->status_code, [200, 201])){
             throw new API\Exception($response);
         }
         

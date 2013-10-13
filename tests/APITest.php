@@ -141,7 +141,7 @@ class APITest extends PHPUnit_Framework_TestCase{
     }
 
     /**
-     * @expectedException TiendaNube\API\Exception
+     * @expectedException TiendaNube\API\NotFoundException
      */
     public function test404(){
         $this->api->requests = new MockRequests('{"code": 404, "message": "Not Found", "description": "Category with such id does not exist"}', 404);

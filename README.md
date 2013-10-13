@@ -158,3 +158,5 @@ try{
     //  public 'description' => string 'Invalid access token' (length=20)
 }
 ```
+
+Requests that return 404 will throw a subclass called `Tiendanube\API\NotFoundException`.
