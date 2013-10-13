@@ -16,7 +16,7 @@ class Response {
         $this->status_code = $response->status_code;
         $this->body = json_decode($response->body);
         $this->headers = $response->headers;
-        $this->main_language = $response->headers['X-Main-Language'];
+        $this->main_language = isset($response->headers['X-Main-Language']) ? $response->headers['X-Main-Language'] : null;
         
         $this->api = $api;
     }

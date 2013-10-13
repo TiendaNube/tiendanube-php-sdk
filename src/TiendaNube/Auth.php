@@ -9,7 +9,7 @@ class Auth {
     protected $client_id;
     protected $client_secret;
     protected $auth_url;
-    protected $requests;
+    public $requests;
 
     /**
      * Initialize the class to perform authentication for a specific app.

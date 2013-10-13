@@ -11,7 +11,7 @@ class API {
     protected $url;
     protected $access_token;
     protected $user_agent;
-    protected $requests;
+    public $requests;
 
     /**
      * Initialize the class to perform requests to a specific store.
