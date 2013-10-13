@@ -7,14 +7,13 @@ Installation
 ------------
 This SDK is mounted on top of [Requests for PHP](https://github.com/rmccue/Requests), so we recommend using [Composer](https://github.com/composer/composer) for installing.
 
-Simply add the `tiendanube/php-sdk` requirement to composer.json. You will also need to set minimum-stability to dev.
+Simply add the `tiendanube/php-sdk` requirement to composer.json.
 
 ```json
 {
     "require": {
         "tiendanube/php-sdk": ">=1.0"
-    },
-    "minimum-stability": "dev"
+    }
 }
 ```
 
