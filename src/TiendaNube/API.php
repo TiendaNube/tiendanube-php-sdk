@@ -1,6 +1,5 @@
 <?php
 namespace TiendaNube;
-use Requests;
 
 /**
  * Provides access to the endpoints of the API of Tienda Nube/Nuvem Shop.
@@ -12,6 +11,7 @@ class API {
     protected $url;
     protected $access_token;
     protected $user_agent;
+    protected $requests;
 
     /**
      * Initialize the class to perform requests to a specific store.
@@ -23,6 +23,7 @@ class API {
     public function __construct($store_id, $access_token, $user_agent){
         $this->access_token = $access_token;
         $this->user_agent = $user_agent;
+        $this->requests = new Requests;
         
         $this->url = "https://api.tiendanube.com/{$this->version}/$store_id/";
     }
@@ -90,7 +91,7 @@ class API {
             'useragent' => $this->user_agent,
         ];
     
-        $response = Requests::request($this->url . $path, $headers, $data, $method, $options);
+        $response = $this->requests->request($this->url . $path, $headers, $data, $method, $options);
         $response = new API\Response($this, $response);
         if (!in_array($response->status_code, [200, 201])){
             throw new API\Exception($response);

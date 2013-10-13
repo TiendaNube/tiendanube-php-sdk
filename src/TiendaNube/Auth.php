@@ -1,6 +1,5 @@
 <?php
 namespace TiendaNube;
-use Requests;
 
 /**
  * Provides a simple way to authenticate your app for the API of Tienda Nube/Nuvem Shop.
@@ -10,6 +9,7 @@ class Auth {
     protected $client_id;
     protected $client_secret;
     protected $auth_url;
+    protected $requests;
 
     /**
      * Initialize the class to perform authentication for a specific app.
@@ -21,6 +21,7 @@ class Auth {
         $this->client_id = $client_id;
         $this->client_secret = $client_secret;
         $this->auth_url = "https://www.tiendanube.com/apps/authorize/token";
+        $this->requests = new Requests;
     }
     
     /**
@@ -54,7 +55,7 @@ class Auth {
             'grant_type' => 'authorization_code',
         ];
         
-        $response = Requests::post($this->auth_url, [], $params);
+        $response = $this->requests->post($this->auth_url, [], $params);
         if (!$response->success){
             throw new Auth\Exception('Auth url returned with status code ' . $response->status_code);
         }
