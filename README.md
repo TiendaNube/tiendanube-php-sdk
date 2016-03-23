@@ -1,7 +1,7 @@
 Tienda Nube/Nuvem Shop SDK for PHP
 ==================================
 
-This SDK provides a simplified access to the [Tienda Nube/Nuvem Shop API](https://github.com/TiendaNube/api-docs).
+This SDK provides a simplified access to the [API](https://github.com/TiendaNube/api-docs) of [Nuvem Shop](https://www.nuvemshop.com.br) / [Tienda Nube](https://www.tiendanube.com).
 
 Installation
 ------------
