@@ -27,6 +27,16 @@ class API {
         
         $this->url = "https://api.tiendanube.com/{$this->version}/$store_id/";
     }
+
+    /**
+     * Make a HEAD request to the specified path.
+     *
+     * @param string $path The path to the desired resource
+     * @return TiendaNube/API/Response
+     */
+    public function head($path){
+        return $this->_call('HEAD', $path);
+    }
     
     /**
      * Make a GET request to the specified path.
