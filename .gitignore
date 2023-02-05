@@ -1,2 +1,31 @@
-composer.lock
-vendor
+# Ignore our deprecation warnings
+.last_api_deprecation_warning
+
+# Ignore Mac OS X fies.
+.DS_Store
+
+# Ignore the /vendor/ directory for people using composer
+/vendor/
+
+# Ignore PHPUnit coverage file
+clover.xml
+
+# Ignore IDE's configuration files
+.idea
+.vscode
+
+# Ignore PHP CS Fixer local config and cache
+.php_cs
+.php_cs.cache
+.php-cs-fixer.cache
+
+# Ignore PHPStan local config
+.phpstan.neon
+
+# Ignore phpDocumentor's local config and artifacts
+.phpdoc/*
+phpdoc.xml
+
+# Ignore cached PHPUnit results.
+.phpunit.result.cache
+.phpunit.cache

@@ -1,64 +1,71 @@
-Tienda Nube/Nuvem Shop SDK for PHP
-==================================
+# Nuvemshop/Tiendanube SDK for PHP
 
-This SDK provides a simplified access to the [API](https://github.com/TiendaNube/api-docs) of [Nuvem Shop](https://www.nuvemshop.com.br) / [Tienda Nube](https://www.tiendanube.com).
+This SDK provides a simplified access to the [API](https://tiendanube.github.io/api-documentation/) of [Nuvemshop](https://www.nuvemshop.com.br) / [Tiendanube](https://www.tiendanube.com).
 
-Installation
-------------
-This SDK is mounted on top of [Requests for PHP](https://github.com/rmccue/Requests), so we recommend using [Composer](https://github.com/composer/composer) for installing.
+## Requirements
 
-Simply add the `tiendanube/php-sdk` requirement to composer.json.
+PHP 7.4.0 and later.
 
-```json
-{
-    "require": {
-        "tiendanube/php-sdk": ">=1.0"
-    }
-}
+## Composer
+
+You can install the bindings via [Composer](http://getcomposer.org/). Run the following command:
+
+```bash
+composer require stripe/stripe-php
 ```
 
-Then run `composer install` or `composer update` to complete the installation.
-
-If you need an autoloader, you can use the one provided by Composer:
+To use the bindings, use Composer's [autoload](https://getcomposer.org/doc/01-basic-usage.md#autoloading):
 
 ```php
-require 'vendor/autoload.php';
+require_once('vendor/autoload.php');
 ```
 
+## Authenticating Your App
 
-Authenticating Your App
------------------------
 When a user installs your app, he will be taken to your specified Redirect URI with a parameter called `code` containing your temporary authorization code.
 
 With this code you can request a permanent access token.
 
 ```php
-$code = $_GET['code'];
+use Tiendanube\Context;
+use Tiendanube\Auth\OAuth;
 
-$auth = new TiendaNube\Auth(CLIENT_ID, CLIENT_SECRET);
-$store_info = $auth->request_access_token($code);
+$context = Context::initialize(
+    CLIENT_ID,
+    CLIENT_SECRET,
+    APP_BASE_URL,
+    APP_USER_AGENT_PREFIX,
+);
+
+$oauth = new OAuth();
+$session = $oauth->callback($_GET);
 ```
 
-The returned value will contain the id of the authenticated store, as well as the access token and the authorized scopes.
+The returned session will contain the id of the authenticated store, as well as the access token and the authorized scopes.
 
 ```php
-var_dump($store_info);
-//array (size=3)
-//  'store_id' => string '1234' (length=4)
-//  'access_token' => string 'a2b544066ee78926bd0dfc8d7bd784e2e016b422' (length=40)
-//  'scope' => string 'read_products,read_orders,read_customers' (length=40)
+var_dump($session);
+//object(Tiendanube\Auth\Session)#5 (3) {
+//  ["storeId":"Tiendanube\Auth\Session":private]=>
+//  string(4) "1234"
+//  ["scope":"Tiendanube\Auth\Session":private]=>
+//  string(40) "read_products,read_orders,read_customers"
+//  ["accessToken":"Tiendanube\Auth\Session":private]=>
+//  string(40) "a2b544066ee78926bd0dfc8d7bd784e2e016b422"
+//}
 ```
 
-Keep in mind that future visits to your app will not go through the Redirect URI, so you should store the store id in a session.
+Keep in mind that future visits to your app will not go through the Redirect URI, so you should store the session.
 
-However, if you need to authenticate a user that has already installed your app (or invite them to install it), you can redirect them to login to the Tienda Nube/Nuvem Shop site.
+However, if you need to authenticate a user that has already installed your app (or invite them to install it), you can redirect them to login to the Nuvemshop/Tiendanube site.
 
 ```php
-$auth = new TiendaNube\Auth(CLIENT_ID, CLIENT_SECRET);
+use Tiendanube\Auth\OAuth;
+$auth = new OAuth();
 
 //You can use one of these to obtain a url to login to your app
-$url = $auth->login_url_brazil();
-$url = $auth->login_url_spanish();
+$url = $auth->loginUrlBrazil();
+$url = $auth->loginUrlSpLATAM();
 
 //Redirect to $url
 ```
@@ -71,92 +78,51 @@ Making a Request
 The first step is to instantiate the `API` class with a store id and an access token, as well as a [user agent to identify your app](https://github.com/TiendaNube/api-docs#identify-your-app). Then you can use the `get`, `post`, `put` and `delete` methods.
 
 ```php
-$api = new TiendaNube\API(STORE_ID, ACCESS_TOKEN, 'Awesome App (contact@awesome.com)');
-$response = $api->get("products");
-var_dump($response->body);
+
+use Tiendanube\Context;
+use Tiendanube\Auth\Session;
+use Tiendanube\Rest\Adminv1\Product;
+
+$context = Context::initialize(
+    CLIENT_ID,
+    CLIENT_SECRET,
+    'www.awesome-app.com',
+    'Awesome App (contact@awesome.com)'
+);
+
+$session = new Session(
+    STORE_ID,
+    ACCESS_TOKEN,
+    SCOPES
+);
+
+$productsFromFirstPage = Product::all($session);
+var_dump($productsFromFirstPage);
+
+//You can then access following pages with the same object
+$productsFromSecondPage = Product::all($session, Product::$nextPageQuery);
 ```
 
-You can access the headers of the response via `$response->headers` as if it were an array:
+You can also call the endpoints directly
 
 ```php
-var_dump(isset($response->headers['X-Total-Count']));
-//boolean true
+use Tiendanube\Context;
+use Tiendanube\Auth\Session;
 
-var_dump($response->headers['X-Total-Count']);
-//string '48' (length=2)
+$context = Context::initialize(
+    CLIENT_ID,
+    CLIENT_SECRET,
+    'www.awesome-app.com',
+    'Awesome App (contact@awesome.com)'
+);
+
+$session = new Session(
+    STORE_ID,
+    ACCESS_TOKEN,
+    SCOPES
+);
+
+$client = new \Tiendanube\Clients\Rest($session->getStoreId(), $session->getAccessToken());
+$response = $client->get('products');
+var_dump($response->getStatusCode(), $response->getDecodedBody(), $response->getHeaders(), $response->getPageInfo());
 ```
-
-For convenience, the `X-Main-Language` header can be obtained from `$response->main_language`:
-
-```php
-$response = $api->get("products/123456");
-$language = $response->main_language;
-var_dump($response->body->name->$language);
-```
-
-Other examples:
-
-```php
-//Create a product
-$response = $api->post("products", [
-    'name' => 'Tienda Nube',
-]);
-$product_id = $response->body->id;
-
-//Change its name
-$response = $api->put("products/$product_id", [
-    'name' => 'Nuvem Shop',
-]);
-
-//And delete it
-$response = $api->delete("products/$product_id");
-
-//You can also send arguments to GET requests
-$response = $api->get("orders", [
-    'since_id' => 10000,
-]);
-```
-
-For list results you can use the `next`, `prev`, `first` and `last` methods to retrieve the corresponding page as a new response object.
-
-```php
-$response = $api->get('products');
-while($response != null){
-    foreach($response->body as $product){
-        var_dump($product->id);
-    }
-    $response = $response->next();
-}
-```
-
-Exceptions
-----------
-Calls to `Auth` may throw a `Tiendanube\Auth\Exception`:
-
-```php
-try{
-    $auth->request_access_token($code);
-} catch(Tiendanube\Auth\Exception $e){
-    var_dump($e->getMessage());
-    //string '[invalid_grant] The authorization code has expired' (length=50)
-}
-```
-
-Likewise, calls to `API` may throw a `Tiendanube\API\Exception`. You can retrieve the original response from these exceptions:
-
-```php
-try{
-    $api->get('products');
-} catch(Tiendanube\API\Exception $e){
-    var_dump($e->getMessage());
-    //string 'Returned with status code 401: Invalid access token' (length=43)
-    
-    var_dump($e->response->body);
-    //object(stdClass)[165]
-    //  public 'code' => int 401
-    //  public 'message' => string 'Unauthorized' (length=12)
-    //  public 'description' => string 'Invalid access token' (length=20)
-}
-```
-
-Requests that return 404 will throw a subclass called `Tiendanube\API\NotFoundException`.

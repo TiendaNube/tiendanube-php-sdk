@@ -1,0 +1,11 @@
+# https://git-scm.com/book/en/v2/Customizing-Git-Git-Attributes
+
+# A list of files and folders those will be excluded from archives and the
+# Composer package (for purposes of making it smaller).
+/.editorconfig export-ignore
+/.gitattributes export-ignore
+/.github export-ignore
+/.php-cs-fixer.php export-ignore
+/.vscode export-ignore
+/phpunit.xml export-ignore
+/tests export-ignore
