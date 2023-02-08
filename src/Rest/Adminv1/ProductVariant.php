@@ -58,7 +58,7 @@ class ProductVariant extends Base
         ["http_method" => "delete", "operation" => "delete", "ids" => ["product_id", "id"],
             "path" => "products/<product_id>/variants/<id>"],
 
-        ["http_method" => "post", "operation" => "post", "ids" => ["product_id"],
+        ["http_method" => "post", "operation" => "stock", "ids" => ["product_id"],
             "path" => "products/<product_id>/variants/stock"],
     ];
 
@@ -138,5 +138,31 @@ class ProductVariant extends Base
             $urlIds,
             $params,
         );
+    }
+
+    /**
+     * @param Session $session
+     * @param int|string $id
+     * @param array $urlIds Allowed indexes:
+     *     product_id
+     * @param mixed[] $params
+     *
+     * @return array|null
+     */
+    public static function stock(
+        Session $session,
+                $product_id,
+        array $urlIds = [],
+        array $params = []
+    ): ?array {
+        $response = parent::request(
+            "post",
+            "stock",
+            $session,
+            array_merge(["product_id" => $product_id], $urlIds),
+            $params,
+        );
+
+        return $response->getDecodedBody();
     }
 }

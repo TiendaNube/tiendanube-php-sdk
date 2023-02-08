@@ -90,12 +90,13 @@ class OAuth
     }
 
     /**
-     * Obtain a permanent access token from an authorization code.
-     *
+     * * Obtain a permanent access token from an authorization code.
      * @param string $code Authorization code retrieved from the redirect URI.
-     * @throws OAuthException
+     * @return AccessTokenResponse
+     * @throws HttpRequestException
+     * @throws InvalidOAuthException
      */
-    private static function fetchAccessToken($code)
+    private static function fetchAccessToken(string $code)
     {
         $post = [
             'client_id' => Context::$apiKey,

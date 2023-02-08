@@ -28,7 +28,7 @@ class Location extends Base
         ["http_method" => "get", "operation" => "get", "ids" => ["id"], "path" => "locations/<id>"],
         ["http_method" => "put", "operation" => "put", "ids" => ["id"], "path" => "locations/<id>"],
         ["http_method" => "delete", "operation" => "delete", "ids" => ["id"], "path" => "locations/<id>"],
-        ["http_method" => "get", "operation" => "get", "ids" => ["id"], "path" => "locations/<id>/inventory_levels"],
+        ["http_method" => "get", "operation" => "inventory_levels", "ids" => ["id"], "path" => "locations/<id>/inventory_levels"],
     ];
 
     /**
@@ -96,4 +96,31 @@ class Location extends Base
 
         return $response->getDecodedBody();
     }
+
+    /**
+     * @param Session $session
+     * @param int|string $id
+     * @param array $urlIds
+     * @param mixed[] $params
+     *
+     * @return array|null
+     */
+    public static function inventory_levels(
+        Session $session,
+                $id,
+        array $urlIds = [],
+        array $params = []
+    ): ?array {
+        $response = parent::request(
+            "get",
+            "inventory_levels",
+            $session,
+            array_merge(["id" => $id], $urlIds),
+            $params,
+            [],
+        );
+
+        return $response->getDecodedBody();
+    }
+
 }

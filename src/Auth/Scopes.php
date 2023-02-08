@@ -65,7 +65,7 @@ final class Scopes
             $scopes = new self($scopes);
         }
 
-        return count(array_diff($scopes->toArray(), $this->expandedScopes)) === 0;
+        return empty(array_diff($scopes->toArray(), $this->expandedScopes));
     }
 
     /**
@@ -83,7 +83,7 @@ final class Scopes
 
         return (
             count($this->compressedScopes) === count($scopes->compressedScopes) &&
-            count(array_diff($this->compressedScopes, $scopes->compressedScopes)) === 0
+            empty(array_diff($this->compressedScopes, $scopes->compressedScopes))
         );
     }
 
