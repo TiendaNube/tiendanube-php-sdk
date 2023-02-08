@@ -24,11 +24,17 @@ class Location extends Base
     protected static array $hasMany = [];
     protected static array $paths = [
         ["http_method" => "get", "operation" => "get", "ids" => [], "path" => "locations"],
+
         ["http_method" => "post", "operation" => "post", "ids" => [], "path" => "locations"],
+
         ["http_method" => "get", "operation" => "get", "ids" => ["id"], "path" => "locations/<id>"],
+
         ["http_method" => "put", "operation" => "put", "ids" => ["id"], "path" => "locations/<id>"],
+
         ["http_method" => "delete", "operation" => "delete", "ids" => ["id"], "path" => "locations/<id>"],
-        ["http_method" => "get", "operation" => "inventory_levels", "ids" => ["id"], "path" => "locations/<id>/inventory_levels"],
+
+        ["http_method" => "get", "operation" => "inventory_levels", "ids" => ["id"],
+            "path" => "locations/<id>/inventory_levels"],
     ];
 
     /**
@@ -105,9 +111,9 @@ class Location extends Base
      *
      * @return array|null
      */
-    public static function inventory_levels(
+    public static function inventoryLevels(
         Session $session,
-                $id,
+        $id,
         array $urlIds = [],
         array $params = []
     ): ?array {
@@ -122,5 +128,4 @@ class Location extends Base
 
         return $response->getDecodedBody();
     }
-
 }

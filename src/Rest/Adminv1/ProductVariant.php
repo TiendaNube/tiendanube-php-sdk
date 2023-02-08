@@ -151,7 +151,7 @@ class ProductVariant extends Base
      */
     public static function stock(
         Session $session,
-                $product_id,
+        $product_id,
         array $urlIds = [],
         array $params = []
     ): ?array {

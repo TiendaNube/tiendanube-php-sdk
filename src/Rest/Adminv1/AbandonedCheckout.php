@@ -89,8 +89,11 @@ class AbandonedCheckout extends Base
 
     protected static array $paths = [
         ["http_method" => "get", "operation" => "get", "ids" => [], "path" => "checkouts"],
+
         ["http_method" => "get", "operation" => "get", "ids" => ["id"], "path" => "checkouts/<id>"],
-        ["http_method" => "post", "operation" => "coupons", "ids" => ["id"], "path" => "checkouts/<id>/coupons"],
+
+        ["http_method" => "post", "operation" => "coupons", "ids" => ["id"],
+            "path" => "checkouts/<id>/coupons"],
     ];
 
 
@@ -151,8 +154,7 @@ class AbandonedCheckout extends Base
     public function coupons(
         array $params = [],
         array $body = []
-    ): ?array
-    {
+    ): ?array {
         $response = parent::request(
             "post",
             "coupons",
