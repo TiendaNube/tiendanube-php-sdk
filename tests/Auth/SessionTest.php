@@ -35,4 +35,23 @@ final class SessionTest extends BaseTestCase
 
         $this->assertFalse($session->isValid());
     }
+
+    public function testIsValidReturnsFalseIfSessionIsCreatedWithoutScopes()
+    {
+        Context::$scopes = new Scopes('read_products,write_orders');
+
+        $session = new Session('12345', 'my_access_token', '');
+
+        $this->assertFalse($session->isValid());
+    }
+
+    public function testIsValidReturnsTrueIfSessionScopesAreUpdated()
+    {
+        Context::$scopes = new Scopes('read_products,write_orders');
+
+        $session = new Session('12345', 'my_access_token', '');
+        $session->setScope('write_orders,,,read_products,');
+
+        $this->assertTrue($session->isValid());
+    }
 }
