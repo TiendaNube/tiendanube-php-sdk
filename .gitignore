@@ -19,6 +19,9 @@ clover.xml
 .php_cs.cache
 .php-cs-fixer.cache
 
+# Ignore composer executable
+composer.phar
+
 # Ignore PHPStan local config
 .phpstan.neon
 
@@ -29,3 +32,6 @@ phpdoc.xml
 # Ignore cached PHPUnit results.
 .phpunit.result.cache
 .phpunit.cache
+
+# Ignore coverage report folder
+.coverage
