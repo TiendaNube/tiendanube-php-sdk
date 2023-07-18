@@ -56,6 +56,19 @@ class API {
         
         return $this->_call('POST', $path, $json);
     }
+
+    /**
+     * Make a PATCH request to the specified path.
+     *
+     * @param string $path The path to the desired resource
+     * @param array $params Parameters to send in the PATCH data
+     * @return TiendaNube/API/Response
+     */
+    public function patch($path, $params = []){
+        $json = json_encode($params);
+        
+        return $this->_call('PATCH', $path, $json);
+    }
     
     /**
      * Make a PUT request to the specified path.
